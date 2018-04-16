@@ -20,6 +20,7 @@ public class Main extends Application
     {
         primaryStage.setTitle("My first JavaFX app");
         primaryStage.show();
+        System.out.println(" ");
     }
 
 
