@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -24,14 +25,15 @@ public class Main extends Application
     public void start(Stage primaryStage) throws Exception
     {
         primaryStage.setTitle("My first JavaFX app");
-
+        BorderPane border = new BorderPane();
         TextArea textArea = new TextArea();
-        VBox vbox = new VBox(textArea);
-        Scene scene = new Scene(vbox, 200, 100);
+        TextField textField = new TextField();
+        Scene scene = new Scene(border);
 
-        textArea.setMaxSize(5000,1000000);
+        border.setCenter(textArea);
 
         primaryStage.setScene(scene);
+        primaryStage.sizeToScene();
         primaryStage.show();
     }
 
