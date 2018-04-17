@@ -2,17 +2,22 @@ package com.cosenza;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 public class Window extends Application
 {
 
-    public void windowStart()
+    private BorderPane border;
+    private TextArea textArea;
+    private Scene scene;
+
+    public void windowStart(String[] args)
     {
-        Application.launch();
+        Application.launch(args);
     }
 
 
@@ -20,13 +25,21 @@ public class Window extends Application
     public void start(Stage primaryStage) throws Exception
     {
         primaryStage.setTitle("My first JavaFX app");
-        BorderPane border = new BorderPane();
-        TextArea textArea = new TextArea();
-        TextField textField = new TextField();
-        Scene scene = new Scene(border);
 
+        //Menu
+        border = new BorderPane();
+        MenuBar menuBar = new MenuBar();
+        Menu fileMenu = new Menu("File");
+        Menu optionsMenu = new Menu("Options");
+        Menu helpMenu = new Menu("Help");
+        menuBar.getMenus().addAll(fileMenu, optionsMenu, helpMenu);
+        border.setTop(menuBar);
+
+        //Text Area
+        textArea = new TextArea();
         border.setCenter(textArea);
 
+        scene = new Scene(border);
         primaryStage.setScene(scene);
         primaryStage.sizeToScene();
         primaryStage.show();
