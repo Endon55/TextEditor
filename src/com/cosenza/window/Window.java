@@ -11,6 +11,13 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.awt.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Scanner;
+
 public class Window extends Application
 {
 
@@ -22,6 +29,11 @@ public class Window extends Application
         using lambda functions.
         Figure it out.
     */
+    //probably not needed
+    private Desktop desktop;
+
+    //Init
+    private FileIO fio;
 
     private FileChooser fileChooser;
     private Stage stage;
@@ -29,6 +41,7 @@ public class Window extends Application
     private TextArea textArea;
     private Scene scene;
     private MenuBar menuBar;
+    private File file;
     public void windowStart(String[] args)
     {
         Application.launch(args);
@@ -47,12 +60,14 @@ public class Window extends Application
 
         //Text Area
         textArea = new TextArea();
+
+        textArea.setWrapText(true);
         border.setCenter(textArea);
 
         //File Chooser
         stage = new Stage();
         fileChooser = new FileChooser();
-        fileChooser.setTitle("Open");
+        desktop = Desktop.getDesktop();
 
 
         primaryStage.setScene(scene);
@@ -67,21 +82,18 @@ public class Window extends Application
         Menu fileMenu = new Menu("File");
         MenuItem open = new MenuItem("Open");
 
-/*
-        open.setOnAction(new EventHandler<ActionEvent>()
-        {
-            @Override
-            public void handle(ActionEvent e)
-            {
-                System.out.println("Clicked Open");
-            }
-
-    });
-    */
+        //Open
         open.setOnAction((ActionEvent event) -> {
-            fileChooser.showOpenDialog(stage);
             System.out.println("Clicked Open");
+            //fio.open(fileChooser, stage);
+            fileChooser.setTitle("Open");
+            file = fileChooser.showOpenDialog(stage);
+            if(file != null)
+            {
+                openFile(file);
+            }
         });
+
         MenuItem save = new MenuItem("Save");
         MenuItem saveAs = new MenuItem("Save As");
         MenuItem exit = new MenuItem("Exit");
@@ -105,4 +117,31 @@ public class Window extends Application
 
         menuBar.getMenus().addAll(fileMenu, editMenu, formatMenu, helpMenu);
     }
+
+
+    private void openFile(File file)
+    {
+
+        try
+        {
+            Scanner s = new Scanner(file).useDelimiter("\\s+");
+            String line;
+            while(s.hasNext())
+            {
+                line = s.nextLine();
+                System.out.println(line);
+                textArea.appendText(line);
+                if(s.hasNext())
+                {
+                    textArea.appendText("\n");
+                }
+            }
+        } catch (FileNotFoundException e)
+        {
+            System.out.print("Could't open file");
+            e.printStackTrace();
+        }
+
+    }
+
 }
