@@ -96,6 +96,12 @@ public class Window extends Application
         //Save as
         MenuItem saveAs = new MenuItem("Save As");
         saveAs.setOnAction((ActionEvent event) -> {
+            file = fileChooser.showSaveDialog(stage);
+            saveFile(textArea.getText(), file);
+        });
+        //Save
+        MenuItem save = new MenuItem("Save");
+        save.setOnAction((ActionEvent event) -> {
             if(file == null)
             {
                 file = fileChooser.showSaveDialog(stage);
@@ -103,7 +109,6 @@ public class Window extends Application
             saveFile(textArea.getText(), file);
         });
 
-        MenuItem save = new MenuItem("Save");
         MenuItem exit = new MenuItem("Exit");
         fileMenu.getItems().addAll(open, save, saveAs, exit);
         //Edit
