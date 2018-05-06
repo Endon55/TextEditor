@@ -12,10 +12,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.awt.*;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.util.Scanner;
 
 public class Window extends Application
@@ -68,6 +65,8 @@ public class Window extends Application
         stage = new Stage();
         fileChooser = new FileChooser();
         desktop = Desktop.getDesktop();
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt", "*.txt");
+        fileChooser.getExtensionFilters().add(extFilter);
 
 
         primaryStage.setScene(scene);
@@ -94,8 +93,17 @@ public class Window extends Application
             }
         });
 
-        MenuItem save = new MenuItem("Save");
+        //Save as
         MenuItem saveAs = new MenuItem("Save As");
+        saveAs.setOnAction((ActionEvent event) -> {
+            if(file == null)
+            {
+                file = fileChooser.showSaveDialog(stage);
+            }
+            saveFile(textArea.getText(), file);
+        });
+
+        MenuItem save = new MenuItem("Save");
         MenuItem exit = new MenuItem("Exit");
         fileMenu.getItems().addAll(open, save, saveAs, exit);
         //Edit
@@ -142,6 +150,24 @@ public class Window extends Application
             e.printStackTrace();
         }
 
+    }
+
+    private void saveFile(String text, File file)
+    {
+
+        try
+        {
+            if(file != null)
+            {
+                FileWriter fileWriter;
+                fileWriter = new FileWriter(file);
+                fileWriter.write(text);
+                fileWriter.close();
+            }
+        } catch (IOException e)
+        {
+            System.out.println("Couldnt close File");
+        }
     }
 
 }
