@@ -1,7 +1,6 @@
 package com.cosenza;
 
 
-import com.cosenza.window.TextFlowWindow;
 import com.cosenza.window.Window;
 
 /*
@@ -13,10 +12,10 @@ public class Main
 
     public static void main(String[] args)
     {
-        //Window window = new Window();
-        //window.windowStart(args);
-        TextFlowWindow tfWindow = new TextFlowWindow();
-        tfWindow.windowStart(args);
+        Window window = new Window();
+        window.windowStart(args);
+        //Testbench tfWindow = new Testbench();
+        //tfWindow.windowStart(args);
     }
 
 

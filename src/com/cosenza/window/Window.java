@@ -12,6 +12,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.fxmisc.richtext.StyleClassedTextArea;
 
 import java.awt.*;
 import java.io.*;
@@ -32,20 +33,20 @@ public class Window extends Application
     private Desktop desktop;
 
     //Init
-    private FileIO fio;
-
-    private Menus menus;
-
-    private FileChooser fileChooser;
     private Stage stage;
     private BorderPane border;
-    TextArea textArea;
+    private StyleClassedTextArea textArea;
+    //TextArea textArea;
     //private TextFlow textFlow;
     private Scene scene;
-    private MenuBar menuBar;
+
+    //File
     private File file;
+    private FileChooser fileChooser;
 
     //Menus
+    private Menus menus;
+    private MenuBar menuBar;
     //File
     private Menu fileMenu;
     private MenuItem open;
@@ -75,16 +76,17 @@ public class Window extends Application
     @Override
     public void start(Stage primaryStage) throws Exception
     {
+        textArea = new StyleClassedTextArea();
         menus = new Menus();
         primaryStage.setTitle("Text Editor");
         menuInit();
-        eventHandler();
+        fileEventHandler();
         border = new BorderPane();
-        scene = new Scene(border);
+        scene = new Scene(border, 750  , 500);
         border.setTop(menuBar);
 
         //Text Area
-        textArea = new TextArea();
+        //textArea = new TextArea();
         textArea.setWrapText(true);
         border.setCenter(textArea);
 
@@ -161,7 +163,6 @@ public class Window extends Application
 
     private void saveFile(String text, File file)
     {
-
         try
         {
             if(file != null)
@@ -176,11 +177,7 @@ public class Window extends Application
             System.out.println("Couldnt close File");
         }
     }
-    private void eventHandler()
-    {
 
-
-    }
     private void fileEventHandler()
     {
         //Open

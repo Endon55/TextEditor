@@ -12,6 +12,9 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.fxmisc.flowless.VirtualizedScrollPane;
+import org.fxmisc.richtext.GenericStyledArea;
+import org.fxmisc.richtext.StyleClassedTextArea;
 
 import java.awt.*;
 import java.io.*;
@@ -20,9 +23,10 @@ import java.util.Scanner;
 import java.awt.*;
 
 
-public class TextFlowWindow extends Application
+public class Testbench extends Application
 {
 
+    private StyleClassedTextArea area;
     private Menus menus;
 
     private FileChooser fileChooser;
@@ -65,14 +69,18 @@ public class TextFlowWindow extends Application
     public void start(Stage primaryStage) throws Exception
     {
         primaryStage.setTitle("Text Editor");
-        //menuInit();
+        menuInit();
         //eventHandler();
-
+        area = new StyleClassedTextArea();
+        area.setWrapText(true);
+        VirtualizedScrollPane<StyleClassedTextArea> vsPane = new VirtualizedScrollPane<>(area);
         Text text = new Text("Hello");
         textFlow = new TextFlow(text);
         border = new BorderPane();
-        scene = new Scene(border, textFlow);
+        scene = new Scene(border, 500, 500);
         border.setTop(menuBar);
+        border.setCenter(area);
+
 
         //Text Area
         //textArea = new TextArea();
