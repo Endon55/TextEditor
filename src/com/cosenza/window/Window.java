@@ -1,6 +1,7 @@
 package com.cosenza.window;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
@@ -8,6 +9,7 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -32,13 +34,38 @@ public class Window extends Application
     //Init
     private FileIO fio;
 
+    private Menus menus;
+
     private FileChooser fileChooser;
     private Stage stage;
     private BorderPane border;
-    private TextArea textArea;
+    TextArea textArea;
+    //private TextFlow textFlow;
     private Scene scene;
     private MenuBar menuBar;
     private File file;
+
+    //Menus
+    //File
+    private Menu fileMenu;
+    private MenuItem open;
+    private MenuItem saveAs;
+    private MenuItem save;
+    private MenuItem exit;
+    //Edit
+    private Menu editMenu;
+    private MenuItem cut;
+    private MenuItem copy;
+    private MenuItem paste;
+    //Format
+    private Menu formatMenu;
+    private MenuItem size;
+    private MenuItem font;
+    private MenuItem color;
+    //Help
+    private Menu helpMenu;
+    private MenuItem version;
+
     public void windowStart(String[] args)
     {
         Application.launch(args);
@@ -48,18 +75,20 @@ public class Window extends Application
     @Override
     public void start(Stage primaryStage) throws Exception
     {
-        primaryStage.setTitle("My first JavaFX app");
+        menus = new Menus();
+        primaryStage.setTitle("Text Editor");
         menuInit();
-
+        eventHandler();
         border = new BorderPane();
         scene = new Scene(border);
         border.setTop(menuBar);
 
         //Text Area
         textArea = new TextArea();
-
         textArea.setWrapText(true);
         border.setCenter(textArea);
+
+
 
         //File Chooser
         stage = new Stage();
@@ -78,54 +107,27 @@ public class Window extends Application
         //Menu
         menuBar = new MenuBar();
         //File
-        Menu fileMenu = new Menu("File");
-        MenuItem open = new MenuItem("Open");
-
-        //Open
-        open.setOnAction((ActionEvent event) -> {
-            System.out.println("Clicked Open");
-            //fio.open(fileChooser, stage);
-            fileChooser.setTitle("Open");
-            file = fileChooser.showOpenDialog(stage);
-            if(file != null)
-            {
-                openFile(file);
-            }
-        });
-
-        //Save as
-        MenuItem saveAs = new MenuItem("Save As");
-        saveAs.setOnAction((ActionEvent event) -> {
-            file = fileChooser.showSaveDialog(stage);
-            saveFile(textArea.getText(), file);
-        });
-        //Save
-        MenuItem save = new MenuItem("Save");
-        save.setOnAction((ActionEvent event) -> {
-            if(file == null)
-            {
-                file = fileChooser.showSaveDialog(stage);
-            }
-            saveFile(textArea.getText(), file);
-        });
-
-        MenuItem exit = new MenuItem("Exit");
+        fileMenu = new Menu("File");
+        open = new MenuItem("Open");
+        saveAs = new MenuItem("Save As");
+        save = new MenuItem("Save");
+        exit = new MenuItem("Exit");
         fileMenu.getItems().addAll(open, save, saveAs, exit);
         //Edit
-        Menu editMenu = new Menu("Edit");
-        MenuItem cut = new MenuItem("Cut");
-        MenuItem copy = new MenuItem("Copy");
-        MenuItem paste = new MenuItem("Paste");
+        editMenu = new Menu("Edit");
+        cut = new MenuItem("Cut");
+        copy = new MenuItem("Copy");
+        paste = new MenuItem("Paste");
         editMenu.getItems().addAll(cut, copy, paste);
         //Format
-        Menu formatMenu = new Menu("Format");
-        MenuItem size = new MenuItem("Size");
-        MenuItem font = new MenuItem("Font");
-        MenuItem color = new MenuItem("Color");
+        formatMenu = new Menu("Format");
+        size = new MenuItem("Size");
+        font = new MenuItem("Font");
+        color = new MenuItem("Color");
         formatMenu.getItems().addAll(size, font, color);
         //Help
-        Menu helpMenu = new Menu("Help");
-        MenuItem version = new MenuItem("Version");
+        helpMenu = new Menu("Help");
+        version = new MenuItem("Version");
         helpMenu.getItems().addAll(version);
 
         menuBar.getMenus().addAll(fileMenu, editMenu, formatMenu, helpMenu);
@@ -173,6 +175,50 @@ public class Window extends Application
         {
             System.out.println("Couldnt close File");
         }
+    }
+    private void eventHandler()
+    {
+
+
+    }
+    private void fileEventHandler()
+    {
+        //Open
+        open.setOnAction((ActionEvent event) -> {
+            System.out.println("Clicked Open");
+            //fio.open(fileChooser, stage);
+            fileChooser.setTitle("Open");
+            file = fileChooser.showOpenDialog(stage);
+            if(file != null)
+            {
+                openFile(file);
+            }
+        });
+        //Save
+        save.setOnAction((ActionEvent event) -> {
+            if(file == null)
+            {
+                file = fileChooser.showSaveDialog(stage);
+            }
+            saveFile(textArea.getText(), file);
+        });
+        //Save as
+        saveAs.setOnAction((ActionEvent event) -> {
+            file = fileChooser.showSaveDialog(stage);
+            saveFile(textArea.getText(), file);
+        });
+        //Exit
+        exit.setOnAction((ActionEvent event) -> {
+            Platform.exit();
+        });
+    }
+
+    private void editEventHandler()
+    {
+        cut.setOnAction((ActionEvent event) -> {
+
+
+    });
     }
 
 }
