@@ -8,12 +8,15 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.fxmisc.richtext.StyleClassedTextArea;
 
+import javax.tools.Tool;
 import java.awt.*;
 import java.io.*;
 import java.util.Scanner;
@@ -36,13 +39,17 @@ public class Window extends Application
     private Stage stage;
     private BorderPane border;
     private StyleClassedTextArea textArea;
+
     //TextArea textArea;
     //private TextFlow textFlow;
     private Scene scene;
 
-    //File
+    //File Handling
     private File file;
     private FileChooser fileChooser;
+
+    //System Clipboard
+
 
     //Menus
     private Menus menus;
@@ -58,6 +65,7 @@ public class Window extends Application
     private MenuItem cut;
     private MenuItem copy;
     private MenuItem paste;
+    String cutString;
     //Format
     private Menu formatMenu;
     private MenuItem size;
@@ -81,6 +89,7 @@ public class Window extends Application
         primaryStage.setTitle("Text Editor");
         menuInit();
         fileEventHandler();
+        editEventHandler();
         border = new BorderPane();
         scene = new Scene(border, 750  , 500);
         border.setTop(menuBar);
@@ -214,6 +223,11 @@ public class Window extends Application
     {
         cut.setOnAction((ActionEvent event) -> {
 
+            Clipboard clipboard = Clipboard.getSystemClipboard();
+            ClipboardContent content = new ClipboardContent();
+            content.putString(textArea.getSelectedText());
+            textArea.getSelectedText().replace(textArea.getSelectedText(), "");
+            clipboard.setContent(content);
 
     });
     }
