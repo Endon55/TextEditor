@@ -234,8 +234,9 @@ public class Window extends Application
         size.setOnAction((event) -> {
             final Text caption = new Text("Hello World!");
             //caption.setFill();
-            caption.setStyle("-fx-font: 24 arial;");
-            //textArea.insert(textArea.getCaretPosition(), );
+            //caption.setStyle();
+
+            //scene.add(caption);
         });
     }
 
