@@ -11,6 +11,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Paint;
+import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -18,7 +20,9 @@ import org.fxmisc.richtext.StyleClassedTextArea;
 
 import javax.tools.Tool;
 import java.awt.*;
+import java.awt.datatransfer.Transferable;
 import java.io.*;
+import java.time.format.TextStyle;
 import java.util.Scanner;
 
 public class Window extends Application
@@ -48,7 +52,8 @@ public class Window extends Application
     private File file;
     private FileChooser fileChooser;
 
-    //System Clipboard
+    //Text Formatting
+
 
 
     //Menus
@@ -189,10 +194,9 @@ public class Window extends Application
 
     private void fileEventHandler()
     {
+        //TODO doesnt clear screen when new file is loaded, it just adds the text to the current text.
         //Open
-        open.setOnAction((ActionEvent event) -> {
-            System.out.println("Clicked Open");
-            //fio.open(fileChooser, stage);
+        open.setOnAction((event) -> {
             fileChooser.setTitle("Open");
             file = fileChooser.showOpenDialog(stage);
             if(file != null)
@@ -201,7 +205,7 @@ public class Window extends Application
             }
         });
         //Save
-        save.setOnAction((ActionEvent event) -> {
+        save.setOnAction((event) -> {
             if(file == null)
             {
                 file = fileChooser.showSaveDialog(stage);
@@ -209,27 +213,30 @@ public class Window extends Application
             saveFile(textArea.getText(), file);
         });
         //Save as
-        saveAs.setOnAction((ActionEvent event) -> {
+        saveAs.setOnAction((event) -> {
             file = fileChooser.showSaveDialog(stage);
             saveFile(textArea.getText(), file);
         });
         //Exit
-        exit.setOnAction((ActionEvent event) -> {
+        exit.setOnAction((event) -> {
             Platform.exit();
         });
     }
 
     private void editEventHandler()
     {
-        cut.setOnAction((ActionEvent event) -> {
-
-            Clipboard clipboard = Clipboard.getSystemClipboard();
-            ClipboardContent content = new ClipboardContent();
-            content.putString(textArea.getSelectedText());
-            textArea.getSelectedText().replace(textArea.getSelectedText(), "");
-            clipboard.setContent(content);
-
-    });
+        cut.setOnAction((event)  -> { textArea.cut();});
+        copy.setOnAction((event) -> { textArea.copy(); });
+        paste.setOnAction((event -> { textArea.paste(); }));
+    }
+    private void formatEventHandler()
+    {
+        size.setOnAction((event) -> {
+            final Text caption = new Text("Hello World!");
+            //caption.setFill();
+            caption.setStyle("-fx-font: 24 arial;");
+            //textArea.insert(textArea.getCaretPosition(), );
+        });
     }
 
 }
