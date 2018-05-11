@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -16,36 +17,44 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.fxmisc.richtext.CodeArea;
+import org.fxmisc.richtext.LineNumberFactory;
 import org.fxmisc.richtext.StyleClassedTextArea;
+import org.fxmisc.richtext.StyledTextArea;
 
 import javax.tools.Tool;
-import java.awt.*;
 import java.awt.datatransfer.Transferable;
 import java.io.*;
 import java.time.format.TextStyle;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import java.util.Scanner;
+import java.util.function.BiConsumer;
+
 
 public class Window extends Application
 {
 
     /*
         README
-        You now have a window that has drop down menus with items in it. Giving them funtionality
-        is the next step.
-        Theres an event handle for the open  menuItem, but apparently theres a better way to do those
-        using lambda functions.
-        Figure it out.
+        This project is currently benched.
+        The concepts in the RichTextFX library are too complicated for me at the moment.
     */
     //probably not needed
-    private Desktop desktop;
+    //private Desktop desktop;
+
+    CustomObject co = new CustomObject(true, true, 0, "");
 
     //Init
     private Stage stage;
     private BorderPane border;
+    //private CodeArea textArea;
     private StyleClassedTextArea textArea;
 
     //TextArea textArea;
     //private TextFlow textFlow;
+    List<String> styleClasses = Arrays.asList("-fx-font-color: red", "text-with-caret");
     private Scene scene;
 
     //File Handling
@@ -70,7 +79,6 @@ public class Window extends Application
     private MenuItem cut;
     private MenuItem copy;
     private MenuItem paste;
-    String cutString;
     //Format
     private Menu formatMenu;
     private MenuItem size;
@@ -86,17 +94,27 @@ public class Window extends Application
     }
 
 
+
+
+
+
     @Override
     public void start(Stage primaryStage) throws Exception
     {
+
         textArea = new StyleClassedTextArea();
+        //textArea = new CodeArea();
+        //Line Numbers
+        textArea.setParagraphGraphicFactory(LineNumberFactory.get(textArea));
+        textArea.setStyle("-fx-font-bold;");
         menus = new Menus();
         primaryStage.setTitle("Text Editor");
         menuInit();
         fileEventHandler();
         editEventHandler();
+        formatEventHandler();
         border = new BorderPane();
-        scene = new Scene(border, 750  , 500);
+        scene = new Scene(border, 750, 500);
         border.setTop(menuBar);
 
         //Text Area
@@ -105,19 +123,28 @@ public class Window extends Application
         border.setCenter(textArea);
 
 
+        IndexRange selection = textArea.getSelection();
+        textArea.setStyle(selection.getStart(), selection.getEnd(), co.toList());
 
         //File Chooser
         stage = new Stage();
         fileChooser = new FileChooser();
-        desktop = Desktop.getDesktop();
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt", "*.txt");
         fileChooser.getExtensionFilters().add(extFilter);
-
 
         primaryStage.setScene(scene);
         primaryStage.sizeToScene();
         primaryStage.show();
+        textArea.setStyle("");
+       // textArea.setStyleClass(selection.getStart(), selection.getEnd(), styleClasses);
+        //textArea.getStyleClass();
+
+
+        Text caption = new Text("Hello World!");
+        applyStyle(caption, co);
+
     }
+
     private void menuInit()
     {
         //Menu
@@ -147,6 +174,7 @@ public class Window extends Application
         helpMenu.getItems().addAll(version);
 
         menuBar.getMenus().addAll(fileMenu, editMenu, formatMenu, helpMenu);
+
     }
 
 
@@ -232,12 +260,23 @@ public class Window extends Application
     private void formatEventHandler()
     {
         size.setOnAction((event) -> {
-            final Text caption = new Text("Hello World!");
+            /*
+
+            textArea.getStyleClass().add(selection.getStart(), selection.getEnd(), "-fx-font-family: Helvetica");
+            //textArea.setStyle(selection.getStart(), selection.getEnd(), ");
             //caption.setFill();
             //caption.setStyle();
 
+            textArea.setStyle("-fx-font-size: 1em;");
             //scene.add(caption);
+            */
+
+
+            co.toList();
+
         });
     }
 
 }
+
+
